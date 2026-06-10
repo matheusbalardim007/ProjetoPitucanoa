@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Projeto Pitu Canoa</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --verde: #3B6D11;
+    --verde-claro: #639922;
+    --verde-folha: #EAF3DE;
+    --azul-ceu: #185FA5;
+    --azul-claro: #E6F1FB;
+    --marrom: #854F0B;
+    --marrom-claro: #FAEEDA;
+    --terra: #633806;
+    --branco: #FAFAF7;
+    --texto: #1a2e10;
+    --texto-muted: #4a5c3a;
+    --borda: rgba(59,109,17,0.15);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--branco);
+    color: var(--texto);
+    line-height: 1.7;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(250,250,247,0.95);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--borda);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+  }
+
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--verde);
+    letter-spacing: -0.02em;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--texto-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--verde); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    background:
+      radial-gradient(ellipse at 20% 80%, rgba(99,152,34,0.12) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 20%, rgba(24,95,165,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse at 50% 50%, rgba(133,79,11,0.06) 0%, transparent 70%),
+      var(--branco);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 120px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 120'%3E%3Cpath fill='%233B6D11' fill-opacity='0.08' d='M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z'/%3E%3C/svg%3E") no-repeat bottom;
+    background-size: cover;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    background: var(--verde-folha);
+    color: var(--verde);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 999px;
+    border: 1px solid rgba(99,152,34,0.25);
+    margin-bottom: 1.5rem;
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 7vw, 5rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    color: var(--texto);
+    margin-bottom: 1.5rem;
+    max-width: 760px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero h1 span { color: var(--verde-claro); }
+
+  .hero p {
+    font-size: 1.125rem;
+    color: var(--texto-muted);
+    max-width: 560px;
+    margin: 0 auto 2.5rem;
+  }
+
+  .hero-btns {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    background: var(--verde);
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 14px 28px;
+    border-radius: 999px;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.15s;
+    border: none;
+    cursor: pointer;
+  }
+
+  .btn-primary:hover { background: var(--verde-claro); transform: translateY(-1px); }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--verde);
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 14px 28px;
+    border-radius: 999px;
+    text-decoration: none;
+    border: 1.5px solid var(--verde);
+    transition: background 0.2s;
+  }
+
+  .btn-secondary:hover { background: var(--verde-folha); }
+
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    margin-top: 4rem;
+    flex-wrap: wrap;
+  }
+
+  .stat {
+    text-align: center;
+  }
+
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--verde);
+  }
+
+  .stat-label {
+    font-size: 0.8rem;
+    color: var(--texto-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 2px;
+  }
+
+  /* SEÇÕES */
+  section { padding: 5rem 2rem; }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .section-eyebrow {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--verde-claro);
+    margin-bottom: 0.75rem;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.75rem, 4vw, 2.75rem);
+    font-weight: 700;
+    color: var(--texto);
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+  }
+
+  .section-sub {
+    font-size: 1rem;
+    color: var(--texto-muted);
+    max-width: 540px;
+  }
+
+  /* SOBRE */
+  #sobre { background: var(--branco); }
+
+  .sobre-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+    margin-top: 3rem;
+  }
+
+  .sobre-visual {
+    background: linear-gradient(135deg, var(--verde-folha) 0%, rgba(234,243,222,0.4) 100%);
+    border-radius: 24px;
+    padding: 2.5rem;
+    border: 1px solid rgba(99,152,34,0.2);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .sobre-visual::after {
+    content: '🌿';
+    position: absolute;
+    right: -10px;
+    bottom: -10px;
+    font-size: 8rem;
+    opacity: 0.15;
+  }
+
+  .sobre-values {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .value-item {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .value-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    flex-shrink: 0;
+  }
+
+  .value-icon.verde { background: var(--verde-folha); }
+  .value-icon.azul { background: var(--azul-claro); }
+  .value-icon.marrom { background: var(--marrom-claro); }
+
+  .value-text h4 { font-size: 0.95rem; font-weight: 600; color: var(--texto); margin-bottom: 0.2rem; }
+  .value-text p { font-size: 0.85rem; color: var(--texto-muted); line-height: 1.5; }
+
+  /* AÇÕES / SERVIÇOS */
+  #acoes { background: var(--verde-folha); }
+
+  .acoes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+
+  .acao-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 2rem;
+    border: 1px solid rgba(99,152,34,0.15);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .acao-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(59,109,17,0.1); }
+
+  .acao-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .acao-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    color: var(--texto);
+  }
+
+  .acao-card p {
+    font-size: 0.9rem;
+    color: var(--texto-muted);
+    line-height: 1.65;
+  }
+
+  /* FOTOS */
+  #fotos { background: var(--branco); }
+
+  .fotos-intro {
+    max-width: 560px;
+    margin-bottom: 2.5rem;
+  }
+
+  .galeria {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .galeria-item {
+    border-radius: 16px;
+    overflow: hidden;
+    background: var(--verde-folha);
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    border: 1px solid rgba(99,152,34,0.2);
+    position: relative;
+  }
+
+  .galeria-item.tall {
+    grid-row: span 2;
+    aspect-ratio: auto;
+  }
+
+  .galeria-item.wide {
+    grid-column: span 2;
+    aspect-ratio: 2/1;
+  }
+
+  .galeria-label {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    background: linear-gradient(transparent, rgba(22,55,3,0.75));
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 500;
+    padding: 1.5rem 1rem 0.75rem;
+  }
+
+  .galeria-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .galeria-placeholder span {
+    font-size: 0.75rem;
+    color: var(--verde);
+    font-weight: 500;
+  }
+
+  .ig-cta {
+    margin-top: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .ig-cta a {
+    color: var(--verde);
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-decoration: none;
+    border-bottom: 1.5px solid var(--verde-claro);
+    padding-bottom: 1px;
+    transition: color 0.2s;
+  }
+
+  .ig-cta a:hover { color: var(--verde-claro); }
+
+  /* CONTATO */
+  #contato { background: var(--verde); }
+
+  #contato .section-eyebrow { color: rgba(255,255,255,0.6); }
+  #contato .section-title { color: #fff; }
+  #contato .section-sub { color: rgba(255,255,255,0.75); max-width: 480px; }
+
+  .contato-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    margin-top: 3rem;
+    align-items: start;
+  }
+
+  .contato-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .contato-card {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 16px;
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+
+  .contato-card:hover { background: rgba(255,255,255,0.18); }
+
+  .contato-icon {
+    width: 44px;
+    height: 44px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    flex-shrink: 0;
+  }
+
+  .contato-info h4 {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 2px;
+  }
+
+  .contato-info p {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.65);
+  }
+
+  .mapa-box {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 20px;
+    overflow: hidden;
+    height: 300px;
+  }
+
+  .mapa-box iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    filter: saturate(0.6);
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--terra);
+    color: rgba(255,255,255,0.7);
+    text-align: center;
+    padding: 2rem;
+    font-size: 0.85rem;
+  }
+
+  footer strong { color: #fff; }
+
+  /* RESPONSIVO */
+  @media (max-width: 768px) {
+    .sobre-grid, .contato-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .galeria { grid-template-columns: repeat(2, 1fr); }
+    .galeria-item.tall { grid-row: span 1; aspect-ratio: 1; }
+    .galeria-item.wide { grid-column: span 1; aspect-ratio: 1; }
+    .nav-links { display: none; }
+    .hero-stats { gap: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">🌿 Pitu Canoa</div>
+  <ul class="nav-links">
+    <li><a href="#sobre">Sobre</a></li>
+    <li><a href="#acoes">Ações</a></li>
+    <li><a href="#fotos">Fotos</a></li>
+    <li><a href="#contato">Contato</a></li>
+  </ul>
+  <a href="#contato" class="btn-primary" style="padding:10px 20px;font-size:0.8rem;">Fale conosco</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="inicio">
+  <div>
+    <div class="hero-badge">Zona Sul · Porto Alegre · RS</div>
+    <h1>Raízes na terra,<br/><span>futuro no Guaíba</span></h1>
+    <p>Iniciativa socioambiental comunitária que une agroecologia, preservação do Lago Guaíba e integração social na região de Ponta Grossa e Belém Novo.</p>
+    <div class="hero-btns">
+      <a href="#acoes" class="btn-primary">Conheça o projeto</a>
+      <a href="#contato" class="btn-secondary">Como apoiar</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-num">5,0</div>
+        <div class="stat-label">Avaliação Google</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">3</div>
+        <div class="stat-label">Frentes de atuação</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">ZS</div>
+        <div class="stat-label">Zona Sul · POA</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOBRE -->
+<section id="sobre">
+  <div class="container">
+    <div class="section-eyebrow">Quem somos</div>
+    <h2 class="section-title">Um projeto que nasce<br/>da comunidade</h2>
+    <div class="sobre-grid">
+      <div>
+        <p style="color:var(--texto-muted);margin-bottom:1.5rem;font-size:1rem;">
+          O Projeto Pitu Canoa é uma iniciativa socioambiental comunitária e agroecológica localizada na Zona Sul de Porto Alegre, com foco na região de Ponta Grossa e Belém Novo.
+        </p>
+        <p style="color:var(--texto-muted);margin-bottom:1.5rem;font-size:1rem;">
+          Integrado ao Plano Municipal de Desenvolvimento Rural Sustentável da Prefeitura de Porto Alegre, o projeto conecta produção orgânica de alimentos, preservação ambiental e fortalecimento do tecido social.
+        </p>
+        <p style="color:var(--texto-muted);font-size:1rem;">
+          Nossa atuação une moradores, agricultores e voluntários em torno de um objetivo comum: cuidar da terra e das pessoas.
+        </p>
+      </div>
+      <div class="sobre-visual">
+        <div class="sobre-values">
+          <div class="value-item">
+            <div class="value-icon verde">🌱</div>
+            <div class="value-text">
+              <h4>Agroecologia</h4>
+              <p>Produção orgânica com técnicas agroflorestais sustentáveis.</p>
+            </div>
+          </div>
+          <div class="value-item">
+            <div class="value-icon azul">💧</div>
+            <div class="value-text">
+              <h4>Preservação do Guaíba</h4>
+              <p>Ações de limpeza e conscientização na orla do lago.</p>
+            </div>
+          </div>
+          <div class="value-item">
+            <div class="value-icon marrom">🤝</div>
+            <div class="value-text">
+              <h4>Integração comunitária</h4>
+              <p>Unindo famílias, jovens e idosos em torno do território.</p>
+            </div>
+          </div>
+          <div class="value-item">
+            <div class="value-icon verde">🏛️</div>
+            <div class="value-text">
+              <h4>Parceria municipal</h4>
+              <p>Parte do Plano de Desenvolvimento Rural Sustentável de POA.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AÇÕES -->
+<section id="acoes">
+  <div class="container">
+    <div class="section-eyebrow">O que fazemos</div>
+    <h2 class="section-title">Nossas ações</h2>
+    <p class="section-sub">Três frentes que se complementam para transformar a comunidade e o território.</p>
+    <div class="acoes-grid">
+      <div class="acao-card">
+        <div class="acao-icon" style="background:var(--verde-folha);">🌿</div>
+        <h3>Horta Comunitária</h3>
+        <p>Implementação e manutenção de hortas agroflorestais para produção orgânica, promovendo a segurança alimentar da comunidade local com técnicas sustentáveis e acessíveis.</p>
+      </div>
+      <div class="acao-card">
+        <div class="acao-icon" style="background:var(--azul-claro);">🌊</div>
+        <h3>Preservação do Guaíba</h3>
+        <p>Ações de conscientização ambiental, limpeza e despoluição da orla do Lago Guaíba, preservando um dos maiores patrimônios naturais de Porto Alegre.</p>
+      </div>
+      <div class="acao-card">
+        <div class="acao-icon" style="background:var(--marrom-claro);">👐</div>
+        <h3>Integração Social</h3>
+        <p>Atividades que fortalecem os laços comunitários em Ponta Grossa e Belém Novo, integrando moradores no cuidado com a terra, o meio ambiente e uns com os outros.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOTOS -->
+<section id="fotos">
+  <div class="container">
+    <div class="section-eyebrow">Galeria</div>
+    <h2 class="section-title">O projeto em imagens</h2>
+    <p class="section-sub">Momentos da nossa atuação na horta, nas margens do Guaíba e no coração da comunidade.</p>
+    <div class="galeria">
+      <div class="galeria-item tall" style="background:linear-gradient(160deg,#c0dd97,#3B6D11);">
+        <div class="galeria-placeholder">
+          <span style="font-size:3rem;">🌱</span>
+          <span style="color:#fff;">Horta agroflorestal</span>
+        </div>
+      </div>
+      <div class="galeria-item" style="background:linear-gradient(135deg,#B5D4F4,#185FA5);">
+        <div class="galeria-placeholder">
+          <span style="font-size:2.5rem;">🌊</span>
+          <span style="color:#fff;">Orla do Guaíba</span>
+        </div>
+      </div>
+      <div class="galeria-item" style="background:linear-gradient(135deg,#FAC775,#854F0B);">
+        <div class="galeria-placeholder">
+          <span style="font-size:2.5rem;">🌻</span>
+          <span style="color:#fff;">Colheita orgânica</span>
+        </div>
+      </div>
+      <div class="galeria-item wide" style="background:linear-gradient(135deg,#EAF3DE,#639922);">
+        <div class="galeria-placeholder">
+          <span style="font-size:2.5rem;">🤝</span>
+          <span style="color:var(--texto);">Ação comunitária</span>
+        </div>
+      </div>
+      <div class="galeria-item" style="background:linear-gradient(135deg,#d4f0d4,#27500A);">
+        <div class="galeria-placeholder">
+          <span style="font-size:2.5rem;">🌳</span>
+          <span style="color:#fff;">Plantio de mudas</span>
+        </div>
+      </div>
+    </div>
+    <div class="ig-cta">
+      <span style="font-size:1.2rem;">📸</span>
+      <a href="https://www.instagram.com/pitucanoa/" target="_blank">Veja mais fotos no Instagram @pitucanoa →</a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTATO -->
+<section id="contato">
+  <div class="container">
+    <div class="section-eyebrow">Fale com a gente</div>
+    <h2 class="section-title">Contato & localização</h2>
+    <p class="section-sub">Quer visitar, apoiar ou fazer parte do projeto? Entre em contato.</p>
+    <div class="contato-grid">
+      <div class="contato-cards">
+        <a class="contato-card" href="https://www.instagram.com/pitucanoa/" target="_blank">
+          <div class="contato-icon">📸</div>
+          <div class="contato-info">
+            <h4>Instagram</h4>
+            <p>@pitucanoa</p>
+          </div>
+        </a>
+        <a class="contato-card" href="https://maps.google.com/?q=Estr.+Retiro+da+Ponta+Grossa,+2400,+Porto+Alegre" target="_blank">
+          <div class="contato-icon">📍</div>
+          <div class="contato-info">
+            <h4>Endereço</h4>
+            <p>Estr. Retiro da Ponta Grossa, 2400 — Ponta Grossa, Porto Alegre - RS, 91780-590</p>
+          </div>
+        </a>
+        <div class="contato-card" style="cursor:default;">
+          <div class="contato-icon">⭐</div>
+          <div class="contato-info">
+            <h4>Avaliação Google</h4>
+            <p>5,0 — Organização de Serviço Social</p>
+          </div>
+        </div>
+        <div class="contato-card" style="cursor:default;">
+          <div class="contato-icon">🕐</div>
+          <div class="contato-info">
+            <h4>Visitas</h4>
+            <p>Entre em contato pelo Instagram para agendar</p>
+          </div>
+        </div>
+      </div>
+      <div class="mapa-box">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3453!2d-51.1750!3d-30.1650!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9519857d53f13971%3A0x9c4d2d7e0740181e!2sProjeto%20Pitucanoa!5e0!3m2!1spt-BR!2sbr!4v1699000000000"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p><strong>Projeto Pitu Canoa</strong> · Iniciativa socioambiental comunitária</p>
+  <p style="margin-top:0.5rem;">Ponta Grossa, Porto Alegre - RS · <a href="https://www.instagram.com/pitucanoa/" style="color:rgba(255,255,255,0.6);text-decoration:none;" target="_blank">@pitucanoa</a></p>
+</footer>
+
+</body>
+</html>
